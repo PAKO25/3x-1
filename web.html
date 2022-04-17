@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3x+1</title>
+    <style>
+        body {
+            background-color: black;
+            text-align: center;
+        }
+
+        #num {
+            width: 20%;
+            height: 30px;
+            margin-top: 20%;
+            background-color: black;
+            color: aqua;
+            border: 2px solid aqua;
+            text-align: center;
+        }
+
+        #canvas {
+            display: none;
+            border: 1px solid aqua;
+            margin: auto;
+        }
+    </style>
+    <script type="text/javascript">
+        var canvas;
+        var ctx;
+        var numfield;
+        var num;
+
+        function init() {
+            canvas = document.getElementById('canvas');
+            ctx = canvas.getContext('2d');
+
+            numfield = document.getElementById('num');
+
+            document.addEventListener('keypress', run)
+        }
+
+        function run(e) {
+
+            if (e.keyCode != 13) return;
+
+            numfield.style.display = "none";
+            canvas.style.display = "block";
+
+            let w = window.innerWidth - window.innerWidth / 20;
+            let h = window.innerHeight - window.innerHeight / 20;
+
+            canvas.style.width = w;
+            canvas.style.height = h;
+            canvas.width = w;
+            canvas.height = h;
+
+            num = parseInt(numfield.value);
+            let arr = calc(num);
+
+            let relx = canvas.width / arr.length;
+            let rely = canvas.height / Math.max(...arr);
+            console.log(Math.max(...arr))
+
+            let x = 0;
+            ctx.beginPath();
+            ctx.strokeStyle = "#FFFFFF";
+            ctx.moveTo(0, 0);
+
+            arr.forEach(num => {
+                ctx.lineTo(x * relx, canvas.height - num * rely);
+                x++;
+                console.log(x * relx, canvas.height - num * rely)
+            })
+
+            ctx.stroke();
+        }
+
+        function calc(num) {
+
+            let arr = [];
+            let ponovitve;
+
+            arr.push(num);
+
+            while (num > 1) {
+                if (num % 2 == 0) {
+                    num = num / 2;
+                } else {
+                    num = num * 3 + 1;
+                }
+                arr.push(num);
+                ponovitve++;
+            }
+            return arr;
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <input type="text" placeholder="Enter a number" id="num">
+    <canvas id="canvas"></canvas>
+</body>
+
+</html>
